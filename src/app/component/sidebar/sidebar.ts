@@ -1,17 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.scss',
+  styleUrls: ['./sidebar.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class Sidebar {
+export class SidebarComponent {
   items = [
-    { label: 'Dashboard', route: '/dashboard', svg: 'M3 13h4v8H3z M21 13h-4v8h4z M7 3h10v10H7z' },
-    { label: 'Usuarios', route: '/users', svg: 'M12 12a5 5 0 100-10 5 5 0 000 10z M4 21v-1a4 4 0 014-4h8a4 4 0 014 4v1' },
-    { label: 'Reportes', route: '/reports', svg: 'M3 3v18h18' },
-    { label: 'Ajustes', route: '/settings', svg: 'M12 15.5A3.5 3.5 0 1115.5 12 3.5 3.5 0 0112 15.5z' },
-    { label: 'Cerrar sesión', route: '/logout', svg: 'M16 17l5-5-5-5M21 12H9' }
+    { label: 'Dashboard', route: '/dashboard', icon: 'home' },
+    { label: 'Clientes', route: '/clientes', icon: 'users' },
+    { label: 'Medidores', route: '/medidores', icon: 'gauge' },
+    { label: 'Lecturas', route: '/lecturas', icon: 'book' },
+    { label: 'Boletas', route: '/boletas', icon: 'file' }
   ];
+
+  // ✅ Cierra el sidebar al seleccionar una opción (solo en móvil)
+  closeSidebar() {
+    if (window.innerWidth <= 991) {
+      document.body.classList.remove('sidebar-open');
+    }
+  }
 }

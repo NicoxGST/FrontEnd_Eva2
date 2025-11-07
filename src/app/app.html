@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<app-header></app-header>
+
+<div class="layout">
+  <app-sidebar></app-sidebar>
+
+  <!-- Capa oscura que cierra el sidebar en móvil -->
+  <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<app-footer></app-footer>

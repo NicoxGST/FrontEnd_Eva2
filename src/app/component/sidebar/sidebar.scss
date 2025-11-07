@@ -1,100 +1,139 @@
+/* ===== SIDEBAR PRINCIPAL ===== */
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 68px; /* debajo del header */
   left: 0;
-  bottom: 0;
   width: 260px;
-  padding-top: 72px; /* espacio para header */
-  background: linear-gradient(180deg,#071226 0%, #0b1430 100%);
+  height: calc(100% - 68px);
+  background: linear-gradient(180deg, #071226 0%, #0b1430 100%);
   color: #e6eef8;
-  box-shadow: 4px 0 24px rgba(2,6,23,0.5);
-  transition: width 220ms ease, transform 220ms ease;
-  z-index: 20;
+  box-shadow: 4px 0 24px rgba(2, 6, 23, 0.4);
+  z-index: 900;
+  overflow-y: auto;
+  transform: none;
+  transition: transform 0.3s ease-in-out, box-shadow 0.2s ease, opacity 0.25s ease;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  opacity: 1;
+}
 
-  .nav-list {
-    list-style: none;
-    margin: 0;
+/* ===== LISTA DE NAVEGACIÓN ===== */
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .nav-section {
+    font-size: 12px;
+    color: rgba(230, 238, 248, 0.5);
     padding: 8px 12px;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
 
-    .nav-section {
-      font-size:12px;
-      color: rgba(230,238,248,0.5);
-      padding:8px 12px;
-      text-transform:uppercase;
-      letter-spacing:0.06em;
-    }
+  .nav-item {
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s ease, transform 0.1s ease;
 
-    .nav-divider {
-      height:1px;
-      background: rgba(255,255,255,0.03);
-      margin: 8px 0;
-      border-radius:2px;
-    }
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+        transform: translateY(-2px);
+      }
 
-    .nav-item {
-      .nav-link {
-        display:flex;
-        align-items:center;
-        gap:12px;
-        padding:10px 12px;
-        border-radius:10px;
-        text-decoration:none;
-        color:inherit;
-        transition: background 140ms ease, transform 100ms ease;
-        &:hover {
-          background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-          transform: translateY(-2px);
-        }
+      .icon-wrap {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9fb4d9;
+      }
 
-        .icon-wrap {
-          display:inline-flex;
-          align-items:center;
-          justify-content:center;
-          width:40px;
-          height:40px;
-          border-radius:8px;
-          background: rgba(255,255,255,0.02);
-          color:#9fb4d9;
-          flex:0 0 40px;
-        }
+      .label {
+        font-size: 14px;
+        color: #dbeafe;
+      }
 
-        .label {
-          font-size:14px;
-          color:#dbeafe;
-        }
-
-        &.active, &:focus {
-          background: linear-gradient(90deg, rgba(37,99,235,0.12), rgba(6,95,70,0.04));
-          box-shadow: inset 0 0 0 1px rgba(37,99,235,0.06);
-        }
+      &.active {
+        background: linear-gradient(90deg, rgba(37, 99, 235, 0.15), rgba(6, 95, 70, 0.05));
+        box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.06);
       }
     }
 
-    .logout .nav-link {
-      color:#ffd7d0;
-      .icon-wrap { background: rgba(255,215,210,0.04); color:#ff7b72; }
-      &:hover { background: rgba(255,123,114,0.06); }
+    &.logout .nav-link {
+      color: #ffd7d0;
+      .icon-wrap {
+        background: rgba(255, 215, 210, 0.04);
+        color: #ff7b72;
+      }
+      &:hover {
+        background: rgba(255, 123, 114, 0.06);
+      }
     }
-  }
-
-  /* colapso controlado por clase en body */
-  body.sidebar-collapsed & {
-    width: 80px;
-    .nav-list { .nav-item { .nav-link { justify-content:center; .label { display:none; } } } }
-  }
-
-  @media (max-width: 880px) {
-    transform: translateX(-100%);
-    body.sidebar-open & { transform: translateX(0); }
-    width: 260px;
   }
 }
 
-/* margen para contenido principal (usar .main en layout) */
-.main { margin-left: 260px; transition: margin-left 220ms ease; }
-body.sidebar-collapsed .main { margin-left: 80px; }
-@media (max-width: 880px) { .main { margin-left: 0; } }
+/* ===== ESTADO ABIERTO ===== */
+/* ✅ se aplica en móviles o tablets cuando el body tiene la clase */
+body.sidebar-open .sidebar {
+  transform: translateX(0);
+  opacity: 1;
+  box-shadow: 8px 0 24px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== ESTADO CERRADO (animación suave) ===== */
+body:not(.sidebar-open) .sidebar {
+  opacity: 0.98;
+  transition: transform 0.3s ease, opacity 0.25s ease;
+}
+
+/* ===== OVERLAY (fondo oscuro en móviles) ===== */
+.sidebar-overlay {
+  display: none;
+}
+
+body.sidebar-open .sidebar-overlay {
+  display: block;
+  position: fixed;
+  top: 68px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 800;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* ===== MODO RESPONSIVE ===== */
+
+/* 🔹 Escritorio: Sidebar fijo */
+@media (min-width: 992px) {
+  .sidebar {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
+
+/* 🔹 Móvil/tablet: Sidebar oculto hasta que se abra */
+@media (max-width: 991px) {
+  .sidebar {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}

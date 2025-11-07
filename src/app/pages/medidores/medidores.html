@@ -1,0 +1,72 @@
+<div class="formulario-container">
+  <h2>📟 Registro de Medidores</h2>
+
+  <form [formGroup]="medidorForm" (ngSubmit)="guardar()">
+    <div class="form-grid">
+      <div>
+        <label>Código del Medidor</label>
+        <input type="text" formControlName="codigo_medidor" placeholder="Ej: MED-1234" />
+        <small *ngIf="medidorForm.get('codigo_medidor')?.touched && medidorForm.get('codigo_medidor')?.invalid">
+          Código requerido (solo letras, números o guion).
+        </small>
+      </div>
+
+      <div>
+        <label>Cliente asociado</label>
+        <select formControlName="id_cliente">
+          <option value="">Seleccione un cliente</option>
+          <option *ngFor="let cliente of clientes" [value]="cliente.id_cliente">
+            {{ cliente.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label>Dirección de suministro</label>
+        <input type="text" formControlName="direccion_suministro" placeholder="Dirección completa" />
+      </div>
+
+      <div>
+        <label>Estado</label>
+        <select formControlName="estado">
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="botones">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="btn-secundario" (click)="limpiar()">Limpiar</button>
+    </div>
+  </form>
+
+  <!-- Tabla -->
+  <table *ngIf="medidores.length > 0">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Código</th>
+      <th>Cliente</th>
+      <th>Dirección</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let m of medidores">
+      <td>{{ m.id_medidor }}</td>
+      <td>{{ m.codigo_medidor }}</td>
+      <td>{{ getClienteNombre(m.id_cliente) }}</td>
+      <td>{{ m.direccion_suministro }}</td>
+      <td>{{ m.estado }}</td>
+      <td>
+        <button class="btn-editar" (click)="editar(m)">✏️</button>
+        <button class="btn-eliminar" (click)="eliminar(m.id_medidor)">🗑️</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="medidores.length === 0" class="no-datos">No hay medidores registrados.</p>
+</div>

@@ -1,0 +1,97 @@
+<div class="clientes-container">
+  <h2>Gestión de Clientes</h2>
+
+  <form [formGroup]="clienteForm" (ngSubmit)="guardar()" novalidate>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>RUT</label>
+        <input type="text" formControlName="rut" placeholder="12.345.678-9" />
+        <div class="error" *ngIf="clienteForm.get('rut')?.touched && clienteForm.get('rut')?.errors">
+          RUT inválido (formato: 12345678-9)
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" formControlName="nombre" placeholder="Ej: María González" />
+        <div class="error" *ngIf="clienteForm.get('nombre')?.touched && clienteForm.get('nombre')?.errors">
+          Nombre requerido (mínimo 3 caracteres)
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email de Contacto</label>
+        <input type="email" formControlName="email_contacto" placeholder="correo@ejemplo.cl" />
+        <div class="error" *ngIf="clienteForm.get('email_contacto')?.touched && clienteForm.get('email_contacto')?.errors">
+          Correo electrónico inválido
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="text" formControlName="telefono" placeholder="987654321" />
+        <div class="error" *ngIf="clienteForm.get('telefono')?.touched && clienteForm.get('telefono')?.errors">
+          Ingrese un número válido (8 a 12 dígitos)
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Dirección de Facturación</label>
+        <input type="text" formControlName="direccion_facturacion" placeholder="Calle N°123, Ciudad" />
+        <div class="error" *ngIf="clienteForm.get('direccion_facturacion')?.touched && clienteForm.get('direccion_facturacion')?.errors">
+          Este campo es obligatorio
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Estado</label>
+        <select formControlName="estado">
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-save">
+        {{ editando ? '✏️ Actualizar' : '💾 Guardar' }}
+      </button>
+      <button type="button" class="btn btn-clear" (click)="limpiar()">🧹 Limpiar</button>
+    </div>
+  </form>
+
+  <hr />
+
+  <h3>Lista de Clientes</h3>
+  <table class="tabla-clientes" *ngIf="clientes.length > 0">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>RUT</th>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Teléfono</th>
+      <th>Dirección</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let c of clientes">
+      <td>{{ c.id_cliente }}</td>
+      <td>{{ c.rut }}</td>
+      <td>{{ c.nombre }}</td>
+      <td>{{ c.email_contacto }}</td>
+      <td>{{ c.telefono }}</td>
+      <td>{{ c.direccion_facturacion }}</td>
+      <td>{{ c.estado }}</td>
+      <td>
+        <button class="btn btn-edit" (click)="editar(c)">✏️ Editar</button>
+        <button class="btn btn-delete" (click)="eliminar(c.id_cliente)">🗑️ Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="clientes.length === 0" class="no-data">No hay clientes registrados.</p>
+</div>

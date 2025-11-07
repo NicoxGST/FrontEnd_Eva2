@@ -1,27 +1,29 @@
-// typescript
 import { Component, Renderer2, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './header.html',
   styleUrls: ['./header.scss']
 })
-export class Header implements OnDestroy {
-  private collapsed = false;
+export class HeaderComponent implements OnDestroy {
+  private sidebarOpen = false;
 
   constructor(private renderer: Renderer2) {}
 
   toggleSidebar(): void {
-    this.collapsed = !this.collapsed;
-    const body = document.body;
-    if (this.collapsed) {
-      this.renderer.addClass(body, 'sidebar-collapsed');
+    this.sidebarOpen = !this.sidebarOpen;
+
+    if (this.sidebarOpen) {
+      this.renderer.addClass(document.body, 'sidebar-open');
     } else {
-      this.renderer.removeClass(body, 'sidebar-collapsed');
+      this.renderer.removeClass(document.body, 'sidebar-open');
     }
   }
 
   ngOnDestroy(): void {
-    this.renderer.removeClass(document.body, 'sidebar-collapsed');
+    this.renderer.removeClass(document.body, 'sidebar-open');
   }
 }

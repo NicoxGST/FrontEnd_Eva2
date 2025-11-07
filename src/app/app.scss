@@ -1,0 +1,59 @@
+/* ===== ESTRUCTURA GENERAL ===== */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+/* ===== CONTENIDO PRINCIPAL ===== */
+.main-content {
+  flex: 1;
+  padding: 90px 24px 40px;
+  transition: margin-left 0.3s ease;
+}
+
+/* ===== OVERLAY PARA MÓVIL ===== */
+.sidebar-overlay {
+  position: fixed;
+  top: 68px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 800;
+}
+
+body.sidebar-open .sidebar-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== COMPORTAMIENTO RESPONSIVE ===== */
+
+/* 🔹 Escritorio (sidebar visible siempre) */
+@media (min-width: 992px) {
+  .main-content {
+    margin-left: 260px; /* espacio para el sidebar */
+  }
+
+  .sidebar-overlay {
+    display: none; /* sin overlay en escritorio */
+  }
+}
+
+/* 🔹 Móvil / Tablet (sidebar oculto) */
+@media (max-width: 991px) {
+  .main-content {
+    margin-left: 0;
+    padding: 84px 16px 40px;
+  }
+}
+
+/* ===== SUAVIZAR DESPLAZAMIENTO ===== */
+html, body {
+  scroll-behavior: smooth;
+  background: #f8fafc;
+}
