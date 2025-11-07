@@ -13,8 +13,8 @@
 
       <div class="form-group">
         <label>Nombre</label>
-        <input type="text" formControlName="nombre" placeholder="Ej: María González" />
-        <div class="error" *ngIf="clienteForm.get('nombre')?.touched && clienteForm.get('nombre')?.errors">
+        <input type="text" formControlName="nombre_razon" placeholder="Ej: María González" />
+        <div class="error" *ngIf="clienteForm.get('nombre_razon')?.touched && clienteForm.get('nombre_razon')?.errors">
           Nombre requerido (mínimo 3 caracteres)
         </div>
       </div>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn btn-save">
+      <button type="submit" class="btn btn-save" (click)="guardar()">
         {{ editando ? '✏️ Actualizar' : '💾 Guardar' }}
       </button>
       <button type="button" class="btn btn-clear" (click)="limpiar()">🧹 Limpiar</button>
@@ -80,7 +80,7 @@
     <tr *ngFor="let c of clientes">
       <td>{{ c.id_cliente }}</td>
       <td>{{ c.rut }}</td>
-      <td>{{ c.nombre }}</td>
+      <td>{{ c.nombre_razon }}</td>
       <td>{{ c.email_contacto }}</td>
       <td>{{ c.telefono }}</td>
       <td>{{ c.direccion_facturacion }}</td>
