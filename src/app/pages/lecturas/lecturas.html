@@ -1,1 +1,64 @@
-<p>lecturas works!</p>
+<div class="lecturas-container">
+  <h2 class="title">📘 Registro de Lecturas</h2>
+
+  <form [formGroup]="lecturaForm" (ngSubmit)="guardar()" class="lectura-form card">
+    <div class="form-group">
+      <label for="id_medidor">ID Medidor</label>
+      <input id="id_medidor" type="number" formControlName="id_medidor" placeholder="Ej: 1001" />
+    </div>
+
+    <div class="form-group">
+      <label for="fecha">Fecha</label>
+      <input id="fecha" type="date" formControlName="fecha" />
+    </div>
+
+    <div class="form-group">
+      <label for="lectura_actual">Lectura Actual (kWh)</label>
+      <input id="lectura_actual" type="number" formControlName="lectura_actual" placeholder="Ej: 320" />
+    </div>
+
+    <div class="form-group full">
+      <label for="observacion">Observación</label>
+      <textarea id="observacion" formControlName="observacion" rows="2" placeholder="Ej: Lectura mensual..."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        {{ editingId ? 'Actualizar' : 'Guardar' }}
+      </button>
+      <button type="button" (click)="limpiar()" class="btn btn-secondary">Limpiar</button>
+    </div>
+  </form>
+
+  <div class="card table-card">
+    <h3>📋 Lecturas registradas</h3>
+    <table class="lecturas-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ID Medidor</th>
+          <th>Fecha</th>
+          <th>Lectura</th>
+          <th>Observación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of lecturas">
+          <td>{{ l.id_lectura }}</td>
+          <td>{{ l.id_medidor }}</td>
+          <td>{{ l.fecha }}</td>
+          <td>{{ l.lectura_actual }}</td>
+          <td>{{ l.observacion }}</td>
+          <td class="actions">
+            <button (click)="editar(l)" class="btn-action edit">✏️</button>
+            <button (click)="eliminar(l.id_lectura)" class="btn-action delete">🗑️</button>
+          </td>
+        </tr>
+        <tr *ngIf="lecturas.length === 0">
+          <td colspan="6" class="empty">Sin lecturas registradas</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

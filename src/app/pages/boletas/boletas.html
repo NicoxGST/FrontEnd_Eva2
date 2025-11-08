@@ -1,1 +1,92 @@
-<p>boletas works!</p>
+<div class="boletas-container">
+  <h2 class="title">🧾 Gestión de Boletas</h2>
+
+  <form [formGroup]="boletaForm" (ngSubmit)="guardar()" class="boleta-form card">
+    <div class="form-group">
+      <label>ID Cliente</label>
+      <input type="number" formControlName="id_cliente" placeholder="Ej: 101" />
+    </div>
+
+    <div class="form-group">
+      <label>ID Medidor</label>
+      <input type="number" formControlName="id_medidor" placeholder="Ej: 1001" />
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Emisión</label>
+      <input type="date" formControlName="fecha_emision" />
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Vencimiento</label>
+      <input type="date" formControlName="fecha_vencimiento" />
+    </div>
+
+    <div class="form-group">
+      <label>Consumo (kWh)</label>
+      <input type="number" formControlName="consumo" placeholder="Ej: 250" />
+    </div>
+
+    <div class="form-group">
+      <label>Total a Pagar ($)</label>
+      <input type="number" formControlName="total_pagar" placeholder="Ej: 15000" />
+    </div>
+
+    <div class="form-group full">
+      <label>Estado de Pago</label>
+      <select formControlName="estado_pago">
+        <option value="pendiente">Pendiente</option>
+        <option value="pagado">Pagado</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        {{ editingId ? 'Actualizar' : 'Guardar' }}
+      </button>
+      <button type="button" (click)="limpiar()" class="btn btn-secondary">Limpiar</button>
+    </div>
+  </form>
+
+  <div class="card table-card">
+    <h3>📋 Boletas registradas</h3>
+    <table class="boletas-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Medidor</th>
+          <th>Emisión</th>
+          <th>Vencimiento</th>
+          <th>Consumo (kWh)</th>
+          <th>Total ($)</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let b of boletas">
+          <td>{{ b.id_boleta }}</td>
+          <td>{{ b.id_cliente }}</td>
+          <td>{{ b.id_medidor }}</td>
+          <td>{{ b.fecha_emision }}</td>
+          <td>{{ b.fecha_vencimiento }}</td>
+          <td>{{ b.consumo }}</td>
+          <td>{{ b.total_pagar | currency:'CLP':'symbol':'1.0-0' }}</td>
+          <td>
+            <span [class.pagado]="b.estado_pago === 'pagado'" [class.pendiente]="b.estado_pago === 'pendiente'">
+              {{ b.estado_pago | titlecase }}
+            </span>
+          </td>
+          <td class="actions">
+            <button (click)="editar(b)" class="btn-action edit">✏️</button>
+            <button (click)="eliminar(b.id_boleta)" class="btn-action delete">🗑️</button>
+          </td>
+        </tr>
+        <tr *ngIf="boletas.length === 0">
+          <td colspan="9" class="empty">Sin boletas registradas</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

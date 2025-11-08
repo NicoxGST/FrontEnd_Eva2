@@ -9,3 +9,5 @@ export interface Cliente {
   registro: ClienteRead;
 
 }
+
+
