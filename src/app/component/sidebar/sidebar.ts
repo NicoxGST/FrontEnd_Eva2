@@ -12,7 +12,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class SidebarComponent {
   items = [
-    { label: 'Dashboard', route: '/dashboard', icon: 'home' },
+    { label: 'Inicio', route: '/dashboard', icon: 'home' },
     { label: 'Clientes', route: '/clientes', icon: 'users' },
     { label: 'Medidores', route: '/medidores', icon: 'gauge' },
     { label: 'Lecturas', route: '/lecturas', icon: 'book' },

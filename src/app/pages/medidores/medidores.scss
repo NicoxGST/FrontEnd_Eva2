@@ -1,157 +1,132 @@
 .formulario-container {
-  background: #ffffff;
-  padding: 32px;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin: 1rem auto;
   max-width: 900px;
-  margin: 40px auto;
-  font-family: Inter, system-ui, sans-serif;
 
   h2 {
-    font-size: 22px;
+    text-align: center;
     font-weight: 700;
     color: #0f172a;
-    margin-bottom: 28px;
-    text-align: center;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+    .form-group {
+      display: flex;
+      flex-direction: column;
 
       label {
         font-weight: 600;
-        font-size: 14px;
         color: #1e293b;
-        display: block;
         margin-bottom: 6px;
       }
 
       input,
       select {
-        width: 100%;
         padding: 10px 12px;
         border: 1px solid #cbd5e1;
         border-radius: 8px;
         font-size: 14px;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        background: #fff;
 
         &:focus {
-          outline: none;
           border-color: #2563eb;
           box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-        }
-      }
-
-      small {
-        color: #dc2626;
-        font-size: 12px;
-      }
-    }
-
-    .botones {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 12px;
-
-      button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 14px;
-        transition: all 0.2s ease;
-
-        &:first-child {
-          background: #2563eb;
-          color: white;
-
-          &:hover {
-            background: #1e4ed8;
-          }
-        }
-
-        &.btn-secundario {
-          background: #f1f5f9;
-          color: #0f172a;
-
-          &:hover {
-            background: #e2e8f0;
-          }
+          outline: none;
         }
       }
     }
   }
 
-  /* ===== Tabla ===== */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 32px;
-    font-size: 14px;
+  .botones {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 1.5rem;
 
-    th,
-    td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #e2e8f0;
+    .btn-guardar {
+      background: #2563eb;
+      color: #fff;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #1e40af;
+      }
     }
+
+    .btn-limpiar {
+      background: #e2e8f0;
+      color: #1e293b;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        background: #cbd5e1;
+      }
+    }
+  }
+
+  .tabla {
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
 
     th {
-      background: #f8fafc;
+      background: #f1f5f9;
+      text-align: left;
+      padding: 10px;
       font-weight: 600;
-      color: #1e293b;
+      color: #334155;
     }
 
-    tr:hover td {
-      background: #f9fafb;
+    td {
+      padding: 10px;
+      border-top: 1px solid #e2e8f0;
     }
 
     .btn-editar,
     .btn-eliminar {
       border: none;
-      border-radius: 6px;
-      padding: 6px 10px;
+      background: none;
       cursor: pointer;
-      font-size: 14px;
-      transition: background 0.2s ease, transform 0.1s ease;
-
-      &:hover {
-        transform: scale(1.05);
-      }
+      font-size: 18px;
+      padding: 4px;
     }
 
-    .btn-editar {
-      background: #3b82f6;
-      color: white;
-      margin-right: 8px;
-
-      &:hover {
-        background: #2563eb;
-      }
+    .btn-editar:hover {
+      color: #2563eb;
     }
 
-    .btn-eliminar {
-      background: #ef4444;
-      color: white;
-
-      &:hover {
-        background: #dc2626;
-      }
+    .btn-eliminar:hover {
+      color: #dc2626;
     }
   }
 
   .no-datos {
     text-align: center;
+    margin-top: 1.5rem;
     color: #64748b;
-    margin-top: 20px;
   }
 }
