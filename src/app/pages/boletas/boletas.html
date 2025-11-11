@@ -3,40 +3,71 @@
 
   <form [formGroup]="boletaForm" (ngSubmit)="guardar()" class="boleta-form card">
     <div class="form-group">
-      <label>ID Cliente</label>
-      <input type="number" formControlName="id_cliente" placeholder="Ej: 101" />
+      <label for="id_cliente">Cliente</label>
+      <select id="id_cliente" formControlName="id_cliente">
+        <option value="" disabled selected>Selecciona un cliente</option>
+        <option *ngFor="let c of clientes" [value]="c.id_cliente">{{ c.nombre_razon }} ({{ c.rut }})</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="id_medidor">Medidor</label>
+      <select id="id_medidor" formControlName="id_medidor">
+        <option value="" disabled selected>Selecciona un medidor</option>
+        <option *ngFor="let m of medidoresCliente" [value]="m.id_medidor">{{ m.codigo_medidor }}</option>
+      </select>
     </div>
 
     <div class="form-group">
-      <label>ID Medidor</label>
-      <input type="number" formControlName="id_medidor" placeholder="Ej: 1001" />
+      <label for="anio">Año</label>
+      <select id="anio" formControlName="anio">
+        <option value="" disabled selected>Selecciona año</option>
+        <option *ngFor="let a of aniosLectura" [value]="a">{{ a }}</option>
+      </select>
     </div>
-
     <div class="form-group">
-      <label>Fecha Emisión</label>
-      <input type="date" formControlName="fecha_emision" />
+      <label for="mes">Mes</label>
+      <select id="mes" formControlName="mes">
+        <option value="" disabled selected>Selecciona mes</option>
+        <option *ngFor="let m of mesesLectura" [value]="m">{{ m }}</option>
+      </select>
     </div>
-
     <div class="form-group">
-      <label>Fecha Vencimiento</label>
-      <input type="date" formControlName="fecha_vencimiento" />
+      <label for="kwh_total">Consumo Total (kWh)</label>
+      <input id="kwh_total" type="number" formControlName="kwh_total" placeholder="Ej: 250" />
     </div>
-
     <div class="form-group">
-      <label>Consumo (kWh)</label>
-      <input type="number" formControlName="consumo" placeholder="Ej: 250" />
+      <label for="valor_kwh">$ x kWh</label>
+      <input id="valor_kwh" type="number" formControlName="valor_kwh" placeholder="Ej: 120" />
     </div>
-
     <div class="form-group">
-      <label>Total a Pagar ($)</label>
-      <input type="number" formControlName="total_pagar" placeholder="Ej: 15000" />
+      <label for="tarifa_base">Tarifa Base ($)</label>
+      <input id="tarifa_base" type="number" formControlName="tarifa_base" placeholder="Ej: 120" />
     </div>
-
+    <div class="form-group">
+      <label for="cargos">Cargos ($)</label>
+      <input id="cargos" type="number" formControlName="cargos" placeholder="Ej: 500" />
+    </div>
+    <div class="form-group">
+      <label for="iva">IVA (19%)</label>
+      <input id="iva" type="number" formControlName="iva" readonly style="background:#f5f6fa; color:#222;" />
+    </div>
+    <div class="form-group">
+      <label for="total_pagar">Total a Pagar ($)</label>
+      <input id="total_pagar" type="number" formControlName="total_pagar" readonly style="background:#f5f6fa; color:#222;" />
+    </div>
+    <div class="form-group">
+      <label for="iva">IVA ($)</label>
+      <input id="iva" type="number" formControlName="iva" placeholder="Ej: 285" />
+    </div>
+    <div class="form-group">
+      <label for="total_pagar">Total a Pagar ($)</label>
+      <input id="total_pagar" type="number" formControlName="total_pagar" placeholder="Ej: 15000" />
+    </div>
     <div class="form-group full">
-      <label>Estado de Pago</label>
-      <select formControlName="estado_pago">
-        <option value="pendiente">Pendiente</option>
-        <option value="pagado">Pagado</option>
+      <label for="estado">Estado</label>
+      <select id="estado" formControlName="estado">
+        <option value="emitida">Emitida</option>
+        <option value="pagada">Pagada</option>
       </select>
     </div>
 
@@ -56,10 +87,13 @@
           <th>ID</th>
           <th>Cliente</th>
           <th>Medidor</th>
-          <th>Emisión</th>
-          <th>Vencimiento</th>
+          <th>Año</th>
+          <th>Mes</th>
           <th>Consumo (kWh)</th>
-          <th>Total ($)</th>
+          <th>Tarifa Base ($)</th>
+          <th>Cargos ($)</th>
+          <th>IVA ($)</th>
+          <th>Total a Pagar ($)</th>
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
@@ -67,24 +101,24 @@
       <tbody>
         <tr *ngFor="let b of boletas">
           <td>{{ b.id_boleta }}</td>
-          <td>{{ b.id_cliente }}</td>
-          <td>{{ b.id_medidor }}</td>
-          <td>{{ b.fecha_emision }}</td>
-          <td>{{ b.fecha_vencimiento }}</td>
-          <td>{{ b.consumo }}</td>
+<td>{{ getNombreCliente(b.id_cliente) }}</td>
+<td>{{ getCodigoMedidor(b.id_medidor) }}</td>
+          <td>{{ b.anio }}</td>
+          <td>{{ b.mes }}</td>
+          <td>{{ b.kwh_total }}</td>
+          <td>{{ b.tarifa_base }}</td>
+          <td>{{ b.cargos }}</td>
+          <td>{{ b.iva }}</td>
           <td>{{ b.total_pagar | currency:'CLP':'symbol':'1.0-0' }}</td>
-          <td>
-            <span [class.pagado]="b.estado_pago === 'pagado'" [class.pendiente]="b.estado_pago === 'pendiente'">
-              {{ b.estado_pago | titlecase }}
-            </span>
-          </td>
+          <td>{{ b.estado | titlecase }}</td>
           <td class="actions">
             <button (click)="editar(b)" class="btn-action edit">✏️</button>
             <button (click)="eliminar(b.id_boleta)" class="btn-action delete">🗑️</button>
+            <button (click)="descargarBoleta(b.id_boleta)" class="btn-action download">⬇️ Descargar</button>
           </td>
         </tr>
         <tr *ngIf="boletas.length === 0">
-          <td colspan="9" class="empty">Sin boletas registradas</td>
+          <td colspan="12" class="empty">Sin boletas registradas</td>
         </tr>
       </tbody>
     </table>

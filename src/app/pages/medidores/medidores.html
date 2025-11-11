@@ -1,72 +1,79 @@
-<div class="formulario-container">
-  <h2>📟 Registro de Medidores</h2>
 
-  <form [formGroup]="medidorForm" (ngSubmit)="guardar()" class="formulario">
-    <div class="form-grid">
-      <div class="form-group">
-        <label for="codigo_medidor">Código del Medidor</label>
-        <input id="codigo_medidor" type="text" formControlName="codigo_medidor" placeholder="Ej: MED-1234" />
-      </div>
-
-      <div class="form-group">
-        <label for="id_cliente">Cliente asociado</label>
-        <select id="id_cliente" formControlName="id_cliente">
-          <option value="">Seleccione un cliente</option>
-          <option *ngFor="let cliente of clientes" [value]="cliente.id_cliente">
-            {{ cliente.nombre }}
-          </option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="direccion_suministro">Dirección de suministro</label>
-        <input id="direccion_suministro" type="text" formControlName="direccion_suministro" placeholder="Dirección completa" />
-      </div>
-
-      <div class="form-group">
-        <label for="estado">Estado</label>
-        <select id="estado" formControlName="estado">
-          <option value="activo">Activo</option>
-          <option value="inactivo">Inactivo</option>
-        </select>
-      </div>
+<div class="lecturas-container">
+  <div *ngIf="mensaje" class="mensaje-exito">
+    <span class="material-icons icono">check_circle</span>
+    {{ mensaje }}
+  </div>
+  <div *ngIf="error" class="mensaje-error">
+    <span class="material-icons icono">error_outline</span>
+    {{ error }}
+  </div>
+  <h2 class="title">🔌 Gestión de Medidores</h2>
+  <form [formGroup]="medidorForm" (ngSubmit)="guardar()" class="lectura-form card" novalidate>
+    <div class="form-group">
+      <label for="codigo_medidor">Código del Medidor</label>
+      <input id="codigo_medidor" type="text" formControlName="codigo_medidor" placeholder="Ej: MED-1234" />
     </div>
-
-    <div class="botones">
-      <button type="submit" class="btn-guardar">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
-      <button type="button" class="btn-limpiar" (click)="limpiar()">Limpiar</button>
+    <div class="form-group">
+      <label for="id_cliente">Cliente asociado</label>
+      <select id="id_cliente" formControlName="id_cliente">
+        <option value="">Seleccione un cliente</option>
+        <option *ngFor="let cliente of clientes" [value]="cliente.id_cliente">
+          {{ cliente.nombre_razon }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="direccion_suministro">Dirección de suministro</label>
+      <input id="direccion_suministro" type="text" formControlName="direccion_suministro" placeholder="Dirección completa" />
+    </div>
+    <div class="form-group">
+      <label for="estado">Estado</label>
+      <select id="estado" formControlName="estado">
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        {{ editando ? 'Actualizar' : 'Guardar' }}
+      </button>
+      <button type="button" (click)="limpiar()" class="btn btn-secondary">Limpiar</button>
     </div>
   </form>
-
-  <hr />
-
-  <h3 class="subtitulo">Lista de Medidores</h3>
-
-  <table *ngIf="medidores.length > 0" class="tabla">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Código</th>
-      <th>Cliente</th>
-      <th>Dirección</th>
-      <th>Estado</th>
-      <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let m of medidores">
-      <td>{{ m.id_medidor }}</td>
-      <td>{{ m.codigo_medidor }}</td>
-      <td>{{ getClienteNombre(m.id_cliente) }}</td>
-      <td>{{ m.direccion_suministro }}</td>
-      <td>{{ m.estado }}</td>
-      <td>
-        <button class="btn-editar" (click)="editar(m)">✏️</button>
-        <button class="btn-eliminar" (click)="eliminar(m.id_medidor)">🗑️</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <p *ngIf="medidores.length === 0" class="no-datos">No hay medidores registrados.</p>
+  <div class="card table-card">
+    <h3>📋 Lista de Medidores</h3>
+    <table class="lecturas-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Código</th>
+          <th>Cliente</th>
+          <th>Dirección</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of medidores">
+          <td>{{ m.id_medidor }}</td>
+          <td>{{ m.codigo_medidor }}</td>
+          <td>{{ getClienteNombre(m.id_cliente) }}</td>
+          <td>{{ m.direccion_suministro }}</td>
+          <td>
+            <span [ngClass]="{'estado-activo': m.estado === 'activo', 'estado-inactivo': m.estado === 'inactivo'}">
+              {{ m.estado }}
+            </span>
+          </td>
+          <td class="actions">
+            <button (click)="editar(m)" class="btn-action edit">✏️</button>
+            <button (click)="eliminar(m.id_medidor)" class="btn-action delete">🗑️</button>
+          </td>
+        </tr>
+        <tr *ngIf="medidores.length === 0">
+          <td colspan="6" class="empty">Sin medidores registrados</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,26 +1,75 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ClienteService } from '../../services/api';
-import type { ClienteCreate, ClienteRead } from '../../models/registro.interface';
+import type { ClienteRead } from '../../models/registro.interface';
 
 @Component({
   selector: 'app-clientes',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './clientes.html',
-
-  styleUrls: [`./clientes.scss`]
+  styleUrls: ['./clientes.scss']
 })
 export class ClientesComponent implements OnInit {
+  guardarFiltro(valor: string): void {
+    localStorage.setItem('clientesFiltro', valor);
+    if (valor.length >= 1) {
+      let filtros: string[] = [];
+      try {
+        filtros = JSON.parse(localStorage.getItem('clientesFiltros') || '[]');
+      } catch {}
+      if (!filtros.includes(valor)) {
+        filtros.push(valor);
+        localStorage.setItem('clientesFiltros', JSON.stringify(filtros));
+      }
+    }
+  }
+
+  get sugerenciasFiltro(): string[] {
+    let s: string[] = [];
+    try {
+      s = JSON.parse(localStorage.getItem('clientesFiltros') || '[]');
+    } catch {}
+    return s;
+  }
+
+  // Eliminado getter duplicado
+  mostrarSugerencia(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.setAttribute('autocomplete', 'off');
+    input.blur();
+    setTimeout(() => input.focus(), 0);
+  }
+  get ultimoFiltro(): string | null {
+    return localStorage.getItem('clientesFiltro');
+  }
+  mensaje: string = '';
+  error: string = '';
   clienteForm: FormGroup;
   clientes: ClienteRead[] = [];
-  loading = false;
-  error: string | null = null;
+  // --- FILTRO Y PAGINACIÓN ---
+  filtro: string = '';
+  pageSize: number = 5;
+  paginaActual: number = 1;
+  loading: boolean = false;
+  get clientesFiltrados(): ClienteRead[] {
+    if (!this.filtro.trim()) return this.clientes;
+    const f = this.filtro.trim().toLowerCase();
+    return this.clientes.filter(c =>
+      (c.rut && c.rut.toLowerCase().includes(f)) ||
+      (c.nombre_razon && c.nombre_razon.toLowerCase().includes(f))
+    );
+  }
+  get totalPaginas(): number {
+    return Math.max(1, Math.ceil(this.clientesFiltrados.length / this.pageSize));
+  }
   editingId: string | number | null = null;
 
-  constructor(private fb: FormBuilder, private clienteService: ClienteService) {
+  constructor(
+    private fb: FormBuilder,
+    private clienteService: ClienteService
+  ) {
     this.clienteForm = this.fb.group({
       rut: ['', [Validators.required, Validators.pattern(/^[0-9.\-kK]+$/)]],
       nombre_razon: ['', [Validators.required, Validators.minLength(3)]],
@@ -41,37 +90,35 @@ export class ClientesComponent implements OnInit {
 
   cargarClientes(): void {
     this.loading = true;
-    this.error = null;
+    this.error = '';
     this.clienteService.obtenerClientes().subscribe({
-      next: (list: ClienteRead[]) => this.clientes = list,
+      next: (list: ClienteRead[]) => {
+        this.clientes = list;
+        this.paginaActual = 1;
+      },
       error: () => this.error = 'No se pudieron cargar clientes',
       complete: () => this.loading = false
     });
   }
 
   guardar(): void {
-    console.log('Datos enviados:', this.clienteForm.value);
     if (this.clienteForm.invalid) {
       this.clienteForm.markAllAsTouched();
       return;
     }
-    // Aquí debe llamarse al servicio
     this.clienteService.guardarCliente(this.clienteForm.value).subscribe({
       next: (cliente) => {
-        console.log('Cliente guardado:', cliente);
         this.clientes.unshift(cliente);
+        this.mensaje = 'Cliente guardado correctamente.';
+        this.error = '';
         this.limpiar();
       },
       error: (err) => {
-        console.error('Error al guardar:', err);
-        if (err.error && err.error.detail) {
-          console.error('Detalle del error:', err.error.detail);
-        }
+        this.error = 'Error al guardar cliente.';
+        this.mensaje = '';
       }
-
     });
   }
-
 
   editar(c: ClienteRead): void {
     this.editingId = (c as any).id_cliente;
@@ -87,14 +134,22 @@ export class ClientesComponent implements OnInit {
   }
 
   eliminar(id: string | number): void {
-    if (!confirm('¿Eliminar cliente?')) return;
-    this.loading = true;
     this.clienteService.eliminarCliente(id).subscribe({
-      next: () => this.clientes = this.clientes.filter(c => (c as any).id_cliente !== id),
-      error: () => this.error = 'Error al eliminar cliente',
-      complete: () => this.loading = false
+      next: () => {
+        this.mensaje = 'Cliente eliminado correctamente.';
+        this.error = '';
+        this.cargarClientes();
+        this.limpiar();
+        this.paginaActual = 1;
+      },
+      error: (err) => {
+        this.error = 'No se pudo eliminar el cliente. '
+
+        this.mensaje = '';
+      }
     });
   }
+
 
   limpiar(): void {
     this.clienteForm.reset({
@@ -106,6 +161,7 @@ export class ClientesComponent implements OnInit {
       estado: 'activo'
     });
     this.editingId = null;
-    this.error = null;
+    this.filtro = '';
+    this.paginaActual = 1;
   }
 }

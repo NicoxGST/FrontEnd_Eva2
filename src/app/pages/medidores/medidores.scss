@@ -1,132 +1,228 @@
-.formulario-container {
-  background: #f8fafc;
+// --- DISEÑO MEDIDORES: IDÉNTICO A CLIENTES Y LECTURAS ---
+.lecturas-container {
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  margin: 1rem auto;
-  max-width: 900px;
+  max-width: 1100px;
+  margin: 0 auto;
+  color: #2c3e50;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
 
-  h2 {
-    text-align: center;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1a2b4c;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  transition: all 0.2s ease-in-out;
+}
+.card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.lectura-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #dfe4ea;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #007bff;
+}
+.form-group .error {
+  font-size: 13px;
+  color: #ef4444;
+  margin-top: 4px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  background: #fee2e2;
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-left: 2px;
+}
+.form-group.full {
+  grid-column: span 2;
+}
+
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary {
+  background: #007bff;
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #0062d1;
+}
+.btn-secondary {
+  background: #e0e0e0;
+}
+.btn-secondary:hover {
+  background: #d5d5d5;
+}
+
+.card.table-card {
+  overflow-x: auto;
+}
+
+.lecturas-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+.lecturas-table th,
+.lecturas-table td {
+  padding: 0.75rem;
+  text-align: left;
+}
+.lecturas-table th {
+  background-color: #007bff;
+  color: #fff;
+}
+.lecturas-table tr:nth-child(even) {
+  background: #f9fafc;
+}
+.lecturas-table .actions {
+  display: flex;
+  gap: 0.4rem;
+}
+.lecturas-table .btn-action {
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.lecturas-table .btn-action.edit {
+  background: #e7f3ff;
+  color: #0062d1;
+}
+.lecturas-table .btn-action.edit:hover {
+  background: #cce2ff;
+}
+.lecturas-table .btn-action.delete {
+  background: #ffe6e6;
+  color: #d62828;
+}
+.lecturas-table .btn-action.delete:hover {
+  background: #ffcccc;
+}
+.lecturas-table .empty {
+  text-align: center;
+  color: #7f8c8d;
+  padding: 1rem;
+  font-style: italic;
+}
+
+// --- MODO OSCURO ---
+.dark {
+  body, .lecturas-container {
+    background: #181a20 !important;
+    color: #fff !important;
   }
-
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem 1.5rem;
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-
-      label {
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 6px;
-      }
-
-      input,
-      select {
-        padding: 10px 12px;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        font-size: 14px;
-        background: #fff;
-
-        &:focus {
-          border-color: #2563eb;
-          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-          outline: none;
-        }
-      }
-    }
+  .lecturas-container {
+    background: #181a20 !important;
+    color: #fff !important;
   }
-
-  .botones {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 1.5rem;
-
-    .btn-guardar {
-      background: #2563eb;
-      color: #fff;
-      padding: 10px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-
-      &:hover {
-        background: #1e40af;
-      }
-    }
-
-    .btn-limpiar {
-      background: #e2e8f0;
-      color: #1e293b;
-      padding: 10px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-
-      &:hover {
-        background: #cbd5e1;
-      }
-    }
+  .title {
+    color: #fff !important;
   }
-
-  .tabla {
-    width: 100%;
-    margin-top: 2rem;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-
-    th {
-      background: #f1f5f9;
-      text-align: left;
-      padding: 10px;
-      font-weight: 600;
-      color: #334155;
-    }
-
-    td {
-      padding: 10px;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .btn-editar,
-    .btn-eliminar {
-      border: none;
-      background: none;
-      cursor: pointer;
-      font-size: 18px;
-      padding: 4px;
-    }
-
-    .btn-editar:hover {
-      color: #2563eb;
-    }
-
-    .btn-eliminar:hover {
-      color: #dc2626;
-    }
+  .card {
+    background: #222 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.18) !important;
   }
-
-  .no-datos {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #64748b;
+  .lectura-form .form-group label {
+    color: #60a5fa !important;
+  }
+  .lectura-form .form-group input,
+  .lectura-form .form-group textarea,
+  .lectura-form .form-group select {
+    background: #181a20 !important;
+    color: #fff !important;
+    border: 1px solid #3b82f6 !important;
+  }
+  .lectura-form .form-group .error {
+    background: #fee2e2 !important;
+    color: #ef4444 !important;
+  }
+  .btn-primary {
+    background: #007bff !important;
+    color: #fff !important;
+  }
+  .btn-secondary {
+    background: #e0e0e0 !important;
+    color: #222 !important;
+  }
+  .lecturas-table {
+    background: #222 !important;
+  }
+  .lecturas-table th {
+    background: #007bff !important;
+    color: #fff !important;
+  }
+  .lecturas-table td {
+    color: #fff !important;
+  }
+  .lecturas-table tr:nth-child(even) {
+    background: #181a20 !important;
+  }
+  .lecturas-table .btn-action.edit {
+    background: #e7f3ff !important;
+    color: #60a5fa !important;
+  }
+  .lecturas-table .btn-action.edit:hover {
+    background: #cce2ff !important;
+  }
+  .lecturas-table .btn-action.delete {
+    background: #ffe6e6 !important;
+    color: #d62828 !important;
+  }
+  .lecturas-table .btn-action.delete:hover {
+    background: #ffcccc !important;
+  }
+  .lecturas-table .empty {
+    background: #181a20 !important;
+    color: #7f8c8d !important;
   }
 }

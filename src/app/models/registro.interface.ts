@@ -1,13 +1,26 @@
-3
-import type { ClienteRead, ClienteCreate, ClienteUpdate, UUID } from './form-models';
 
+import type {
+  ClienteRead,
+  MedidorRead,
+  LecturaRead,
+  BoletaRead,
+  UUID
+} from './form-models';
 
-export type { ClienteRead, ClienteCreate, ClienteUpdate, UUID };
-
+export type { ClienteRead, MedidorRead, LecturaRead, BoletaRead, UUID };
 
 export interface Cliente {
   registro: ClienteRead;
-
 }
 
+export interface Medidor {
+  registro: MedidorRead;
+}
 
+export interface LecturaConsumo {
+  registro: LecturaRead;
+}
+
+export interface Boleta {
+  registro: BoletaRead;
+}

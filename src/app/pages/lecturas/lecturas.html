@@ -1,20 +1,42 @@
 <div class="lecturas-container">
   <h2 class="title">📘 Registro de Lecturas</h2>
 
+  <!-- El filtro de medidor solo va dentro del form-group del select -->
   <form [formGroup]="lecturaForm" (ngSubmit)="guardar()" class="lectura-form card">
     <div class="form-group">
       <label for="id_medidor">ID Medidor</label>
-      <input id="id_medidor" type="number" formControlName="id_medidor" placeholder="Ej: 1001" />
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <input type="text" id="filtroMedidor" [(ngModel)]="filtroMedidor" [ngModelOptions]="{standalone: true}" name="filtroMedidor" placeholder="Filtrar medidor..." style="border-radius: 8px; border: 1px solid #dfe4ea;" />
+        <ul *ngIf="filtroMedidor && (medidores | filterMedidor:filtroMedidor).length > 0" style="list-style:none; margin:0; padding:0; background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); max-height:180px; overflow-y:auto; position:relative; z-index:2;">
+          <li *ngFor="let m of medidores | filterMedidor:filtroMedidor" style="padding:8px 12px; cursor:pointer; border-bottom:1px solid #eee;" (click)="lecturaForm.get('id_medidor')?.setValue(m.id_medidor); filtroMedidor = m.codigo_medidor">
+            <span>{{ m.codigo_medidor }} (ID: {{ m.id_medidor }}<span *ngIf="m.nombre_razon"> - {{ m.nombre_razon }}</span>)</span>
+          </li>
+        </ul>
+        <select id="id_medidor" formControlName="id_medidor">
+          <option value="" disabled selected>Selecciona un medidor</option>
+          <option *ngFor="let m of medidores | filterMedidor:filtroMedidor" [value]="m.id_medidor">
+            {{ m.codigo_medidor }} (ID: {{ m.id_medidor }})<span *ngIf="m.nombre_razon"> - {{ m.nombre_razon }}</span>
+          </option>
+        </select>
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="fecha">Fecha</label>
+      <label for="fecha">Fecha de lectura</label>
       <input id="fecha" type="date" formControlName="fecha" />
     </div>
 
     <div class="form-group">
       <label for="lectura_actual">Lectura Actual (kWh)</label>
       <input id="lectura_actual" type="number" formControlName="lectura_actual" placeholder="Ej: 320" />
+    </div>
+    <div class="form-group" *ngIf="lecturaAnterior !== null">
+      <label for="lectura_anterior">Lectura Anterior (kWh)</label>
+      <input id="lectura_anterior" type="number" [value]="lecturaAnterior" readonly style="background:#f5f6fa;" />
+    </div>
+    <div class="form-group">
+      <label for="consumo">Consumo (kWh)</label>
+      <input id="consumo" type="number" [value]="consumo" readonly style="background:#f5f6fa;" />
     </div>
 
     <div class="form-group full">
@@ -37,9 +59,13 @@
         <tr>
           <th>ID</th>
           <th>ID Medidor</th>
-          <th>Fecha</th>
-          <th>Lectura</th>
+          <th>Año</th>
+          <th>Mes</th>
+          <th>Lectura Actual</th>
+          <th>Lectura Anterior</th>
+          <th>Consumo</th>
           <th>Observación</th>
+          <th>Creado</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -47,9 +73,13 @@
         <tr *ngFor="let l of lecturas">
           <td>{{ l.id_lectura }}</td>
           <td>{{ l.id_medidor }}</td>
-          <td>{{ l.fecha }}</td>
+          <td>{{ l.anio }}</td>
+          <td>{{ l.mes }}</td>
           <td>{{ l.lectura_actual }}</td>
+          <td>{{ l.lectura_anterior }}</td>
+          <td>{{ l.consumo }}</td>
           <td>{{ l.observacion }}</td>
+          <td>{{ l.created_at ? (l.created_at | date:'yyyy-MM-dd HH:mm:ss') : '' }}</td>
           <td class="actions">
             <button (click)="editar(l)" class="btn-action edit">✏️</button>
             <button (click)="eliminar(l.id_lectura)" class="btn-action delete">🗑️</button>
