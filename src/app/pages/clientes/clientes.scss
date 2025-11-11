@@ -1,21 +1,30 @@
-
-
-// --- DISEÑO CLIENTES: IDÉNTICO A LECTURAS ---
+/* === CONTENEDOR GENERAL === */
 .lecturas-container {
   padding: 2rem;
   max-width: 1100px;
   margin: 0 auto;
   color: #2c3e50;
   font-family: "Inter", "Segoe UI", sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 }
 
+/* === TÍTULO === */
 .title {
   font-size: 1.8rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
   color: #1a2b4c;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
 }
 
+/* === TARJETAS === */
 .card {
   background: #ffffff;
   border-radius: 16px;
@@ -23,11 +32,17 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   margin-bottom: 2rem;
   transition: all 0.2s ease-in-out;
-}
-.card:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  @media (max-width: 600px) {
+    padding: 1rem;
+  }
 }
 
+/* === FORMULARIO === */
 .lectura-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -37,69 +52,77 @@
 .form-group {
   display: flex;
   flex-direction: column;
-}
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-}
-.form-group input,
-.form-group textarea,
-.form-group select {
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #dfe4ea;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border 0.2s;
-}
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  border-color: #007bff;
-}
-.form-group .error {
-  font-size: 13px;
-  color: #ef4444;
-  margin-top: 4px;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-  background: #fee2e2;
-  border-radius: 4px;
-  padding: 2px 8px;
-  margin-left: 2px;
-}
-.form-group.full {
-  grid-column: span 2;
+
+  label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  input,
+  textarea,
+  select {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #dfe4ea;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.2s;
+
+    &:focus {
+      border-color: #007bff;
+    }
+  }
+
+  &.full {
+    grid-column: span 2;
+
+    @media (max-width: 600px) {
+      grid-column: span 1;
+    }
+  }
 }
 
+/* === BOTONES === */
 .form-actions {
   grid-column: span 2;
   display: flex;
   justify-content: flex-end;
   gap: 0.8rem;
-}
-.btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.btn-primary {
-  background: #007bff;
-  color: #fff;
-}
-.btn-primary:hover {
-  background: #0062d1;
-}
-.btn-secondary {
-  background: #e0e0e0;
-}
-.btn-secondary:hover {
-  background: #d5d5d5;
+
+  @media (max-width: 600px) {
+    grid-column: span 1;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &.btn-primary {
+      background: #007bff;
+      color: #fff;
+
+      &:hover {
+        background: #0062d1;
+      }
+    }
+
+    &.btn-secondary {
+      background: #e0e0e0;
+
+      &:hover {
+        background: #d5d5d5;
+      }
+    }
+  }
 }
 
+/* === TABLA === */
 .card.table-card {
   overflow-x: auto;
 }
@@ -107,132 +130,210 @@
 .lecturas-table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 0.95rem;
   border-radius: 8px;
   overflow: hidden;
-  font-size: 0.95rem;
-}
-.lecturas-table th,
-.lecturas-table td {
-  padding: 0.75rem;
-  text-align: left;
-}
-.lecturas-table th {
-  background-color: #007bff;
-  color: #fff;
-}
-.lecturas-table tr:nth-child(even) {
-  background: #f9fafc;
-}
-.lecturas-table .actions {
-  display: flex;
-  gap: 0.4rem;
-}
-.lecturas-table .btn-action {
-  border: none;
-  border-radius: 6px;
-  padding: 0.4rem 0.6rem;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.2s;
-}
-.lecturas-table .btn-action.edit {
-  background: #e7f3ff;
-  color: #0062d1;
-}
-.lecturas-table .btn-action.edit:hover {
-  background: #cce2ff;
-}
-.lecturas-table .btn-action.delete {
-  background: #ffe6e6;
-  color: #d62828;
-}
-.lecturas-table .btn-action.delete:hover {
-  background: #ffcccc;
-}
-.lecturas-table .empty {
-  text-align: center;
-  color: #7f8c8d;
-  padding: 1rem;
-  font-style: italic;
+
+  th,
+  td {
+    padding: 0.75rem;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  tr:nth-child(even) {
+    background: #f9fafc;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+
+    .btn-action {
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+
+      &.edit {
+        background: #e7f3ff;
+        color: #0062d1;
+
+        &:hover {
+          background: #cce2ff;
+        }
+      }
+
+      &.delete {
+        background: #ffe6e6;
+        color: #d62828;
+
+        &:hover {
+          background: #ffcccc;
+        }
+      }
+    }
+  }
+
+  .empty {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 1rem;
+    font-style: italic;
+  }
 }
 
-// --- MODO OSCURO ---
-.dark {
-  body, .lecturas-container {
-    background: #181a20 !important;
-    color: #fff !important;
-  }
-  .lecturas-container {
-    background: #181a20 !important;
-    color: #fff !important;
-  }
-  .title {
-    color: #ebebeb !important;
-  }
-  .card {
-    background: #222 !important;
-    color: #fff !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.18) !important;
-  }
-  .lectura-form .form-group label {
-    color: #60a5fa !important;
-  }
-  .lectura-form .form-group input,
-  .lectura-form .form-group textarea,
-  .lectura-form .form-group select {
-    background: #181a20 !important;
-    color: #fff !important;
-    border: 1px solid #3b82f6 !important;
-  }
-  .lectura-form .form-group .error {
-    background: #fee2e2 !important;
-    color: #ef4444 !important;
-  }
-  .btn-primary {
-    background: #007bff !important;
-    color: #fff !important;
-  }
-  .btn-secondary {
-    background: #e0e0e0 !important;
-    color: #222 !important;
-  }
+/* === RESPONSIVE TABLA: SCROLL HORIZONTAL EN CELULAR === */
+@media (max-width: 768px) {
   .lecturas-table {
-    background: #222 !important;
-    color: #e5e7eb !important;
-    border: 1px solid #333 !important;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
   }
-  .lecturas-table th {
-    background: #007bff !important;
-    color: #fff !important;
-    border-bottom: 2px solid #333 !important;
-  }
+
+  .lecturas-table th,
   .lecturas-table td {
-    color: #e5e7eb !important;
-    border-bottom: 1px solid #333 !important;
-  }
-  .lecturas-table tr {
-    background: #222 !important;
-  }
-  .lecturas-table tr:nth-child(even) {
-    background: #23242a !important;
-  }
-  .lecturas-table .btn-action.edit {
-    background: #e7f3ff !important;
-    color: #60a5fa !important;
-  }
-  .lecturas-table .btn-action.edit:hover {
-    background: #cce2ff !important;
-  }
-  .lecturas-table .btn-action.delete {
-    background: #ffe6e6 !important;
-    color: #d62828 !important;
-  }
-  .lecturas-table .btn-action.delete:hover {
-    background: #ffcccc !important;
-  }
-  .lecturas-table .empty {
-    background: #181a20 !important;
-    color: #7f8c8d !important;
+    padding: 0.6rem;
   }
 }
 
+/* === FILTRO Y PAGINACIÓN === */
+.table-card > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  text-align: center;
+
+  input[type="text"],
+  select {
+    min-width: 180px;
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+  }
+}
+
+.table-card > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+
+  @media (max-width: 600px) {
+    justify-content: center;
+  }
+}
+
+/* === ESTADOS === */
+.estado-activo {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.estado-inactivo {
+  color: #ef4444;
+  font-weight: 600;
+}
+/* ===========================
+   🔹 Responsive Corrección Total
+   =========================== */
+
+/* 🔸 Elimina límites mínimos de ancho */
+input, select {
+  min-width: 0 !important;
+}
+
+/* 🔸 Asegura que el contenedor no se oculte detrás del header */
+.lecturas-container {
+  padding-top: 90px; /* si el header es fixed */
+}
+
+/* 🔸 Ajustes generales de layout */
+.table-card > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* 🔹 Móviles (pantallas menores a 768px) */
+@media (max-width: 768px) {
+  .lectura-form {
+    grid-template-columns: 1fr !important; /* una sola columna */
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  /* los inputs y selects ocupan todo el ancho */
+  input,
+  select {
+    width: 100%;
+  }
+
+  /* encabezado de tabla desaparece para scroll horizontal */
+  .lecturas-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-spacing: 0;
+  }
+
+  .lecturas-table thead {
+    display: none;
+  }
+
+  .lecturas-table tbody tr {
+    display: block;
+    background: #fff;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    padding: 0.5rem 0.8rem;
+  }
+
+  .lecturas-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border: none;
+  }
+
+  .lecturas-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #555;
+  }
+
+  .lecturas-table td:last-child {
+    justify-content: flex-end;
+  }
+
+  /* margen y centrado */
+  .table-card > div:first-child {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
